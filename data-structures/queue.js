@@ -50,29 +50,53 @@ What's the time complexity?
 
  */
 
-function Queue(capacity) {
-  // implement me...
+function Queue(capacity = 1) {
+  this.capacity = capacity;
+  this.count = 0;
+  this.data = {};
 }
 
 Queue.prototype.enqueue = function(value) {
-  // implement me...
+  if (this.count === this.capacity) {
+    console.log("Max capacity already reached. Remove element before adding a new one.");
+  } else {
+    this.data[this.count++] = value;
+  }
+  return this.count;
 };
 // Time complexity:
 
 Queue.prototype.dequeue = function() {
-  // implement me...
+  if (this.count === 0) {
+    return null;
+  }
+  let value = this.data[--this.count];
+  delete this.data[this.count]
+  return value;
 };
 // Time complexity:
 
 Queue.prototype.peek = function() {
-  // implement me...
+  return this.data[this.count-1];
 };
 
 Queue.prototype.count = function() {
-  // implement me...
+  return this.count;
 };
 // Time complexity:
 
+
+const q = new Queue(2);
+
+q.enqueue('hola');
+console.log(`q.peek(): ${q.peek()}`);
+
+let x = q.enqueue('lola');
+console.log(`q.peek(): ${q.peek()}`);
+
+console.log(`q.peek(): ${q.dequeue()}`);
+console.log(`q.peek(): ${q.dequeue()}`);
+console.log(`q.peek(): ${q.dequeue()}`);
 
 
 /*

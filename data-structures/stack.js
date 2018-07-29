@@ -51,28 +51,98 @@ What's the time complexity?
  */
 
 function Stack(capacity) {
-  // implement me...
+  this.capacity = capacity;
+  this.count = 0;
+  this.stack = {};
+  this._min = null;
 }
 
-Stack.prototype.push = function(value) {
-  // implement me...
+Stack.prototype.push = function (value) {
+  if (this.capacity === this.count) {
+    console.log(`Unable to push ${JSON.stringify(value)}, max capacity ${this.capacity} reached`);
+    return this.count;
+  }
+  this.stack[this.count++] = value;
+  if (this._min === null || value < this._min) {
+    this._min = value;
+  }
+  console.log(`pushed ${JSON.stringify(value)} => ${JSON.stringify(this.stack)}`);
+  return this.count;
 };
 // Time complexity:
 
-Stack.prototype.pop = function() {
-  // implement me...
+Stack.prototype.pop = function () {
+  if (this.count === 0) {
+    return undefined;
+  }
+  const value = this.stack[--this.count];
+  delete this.stack[this.count];
+  console.log(`popped ${JSON.stringify(value)} => ${JSON.stringify(this.stack)}`);
+  if (value === this._min) {
+    this._min = null;
+    for (let i = 0; i < this.count; i++) {
+      if (this._min === null || this.stack[i] < this._min) {
+        this._min = this.stack[i];
+      }
+    }
+  }
+  return value;
 };
 // Time complexity:
 
-Stack.prototype.peek = function() {
-  // implement me...
+Stack.prototype.peek = function () {
+  if (this.count === 0) {
+    return undefined;
+  }
+  return this.stack[this.count];
 };
 // Time complexity:
 
-Stack.prototype.count = function() {
-  // implement me...
+Stack.prototype.count = function () {
+  return this.count;
 };
 // Time complexity:
+
+Stack.prototype.min = function () {
+  console.log(`min = ${JSON.stringify(this._min)}`);
+  return this._min;
+};
+
+Stack.prototype.contains = function (value) {
+  for (let i = 0; i < this.count; i++) {
+    if (this.stack[i] === value) {
+      return true;
+    }
+  }
+  return false;
+}
+
+Stack.prototype.until = function (value) {
+  for (let i = this.count-1; i >= 0; i--) {
+    if (this.stack[i] === value) {
+      return this.count - i;
+    }
+  }
+  return 0;
+}
+
+
+const myStack = new Stack(4);
+
+myStack.push('lola');
+myStack.push('falana');
+
+myStack.min();
+
+myStack.push('memo');
+myStack.push('_tivas');
+
+myStack.push('pepe');
+
+myStack.min();
+
+myStack.pop();
+myStack.min();
 
 
 /*
@@ -84,7 +154,7 @@ Stack.prototype.count = function() {
 
 3. Given a string, determine if the parenthesis in the string are balanced.
 Ex: balancedParens( 'sqrt(5*(3+8)/(4-2))' ) => true
-Ex: balancedParens( 'Math.min(5,(6-3))(' ) => false
+Ex: balancedParens( 'Math._min(5,(6-3))(' ) => false
 
 4. Towers of Hanoi - https://en.wikipedia.org/wiki/Tower_of_Hanoi
 You are given three towers (stacks) and N disks, each of different size. You can move the disks according to three constraints:
