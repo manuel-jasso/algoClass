@@ -19,3 +19,20 @@ Variants:
 (https://en.wikipedia.org/wiki/Cocktail_sort)
 
 */
+
+function bubbleSort(arr) {
+  let j = arr.length - 1;
+  while (j >= 1) {
+    for (let i = 0; i < j; i++) {
+      if (arr[i] > arr[i+1]) {
+        let t = arr[i];
+        arr[i] = arr[i+1];
+        arr[i+1] = t;
+      }
+    }
+    j--;
+  }
+  return arr;
+}
+
+console.log(bubbleSort([2,1,0,-1,0,2,-7]));

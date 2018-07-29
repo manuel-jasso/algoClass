@@ -28,3 +28,47 @@ subarrays for regular merge sort: [ [1], [2], [4], [5], [9] ]
 subarrays for natural merge sort: [ [1,2], [4,5], [9] ]
 
 */
+
+// protip: Split the array into halves and merge them recursively
+// protip: return once we hit an array with a single item. That is a sorted array of size 1!
+// protip: compare the arrays item by item and return the concatenated result
+
+function mergeSort(arr) {
+    function merge(arr1, arr2) {
+      let i1 = 0, l1 = arr1.length;
+      let i2 = 0, l2 = arr2.length;
+      let marr = [];
+      while (i1 < l1 || i2 < l2) {
+        //console.log(`i1=${i1} l1=${l1} i2=${i2} l2=${l2}`);
+        //console.log(`marr = [${marr}]`);
+        if (i1 < l1 && i2 < l2) {
+          if (arr1[i1] < arr2[i2]) {
+            marr.push(arr1[i1++]);
+          } else {
+            marr.push(arr2[i2++]);
+          }
+        } else if (i1 < l1 && i2 === l2) {
+          marr.push(arr1[i1++]);
+        } else if (i1 === l1 && i2 < l2) {
+          marr.push(arr2[i2++]);
+        }
+      }
+      console.log(`marr = [${marr}]`);
+      return marr;
+    }
+
+  let len = arr.length;
+  if (len < 2) {
+    return arr;
+  }
+  let mid = Math.ceil(len / 2);
+  let arr1 = arr.slice(0,mid);
+  let arr2 = arr.slice(mid);
+  arr1 = mergeSort(arr1);
+  arr2 = mergeSort(arr2);
+  return merge(arr1,arr2);
+}
+
+console.log(
+    mergeSort([11,9,12,7,6,10,4,1,8,5,3,2])
+);
