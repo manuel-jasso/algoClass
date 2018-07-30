@@ -88,44 +88,88 @@ function Node(value) {
 function LinkedList(headValue) {
   if (headValue === undefined) console.log('Must provide value for first node');
   this.head = new Node(headValue);
+  console.log(`LinkedList: ${this.print()}`);
+  this.print
 }
 
 LinkedList.prototype.forEach = function(callback) {
-  // implement me...
+  let node = this.head;
+  while (node) {
+    callback(node);
+    node = node.next;
+  }
 };
 // Time complexity:
 
-LinkedList.prototype.print = function() {
-  // implement me...
+LinkedList.prototype.print = function(sep) {
+  let str = '';
+  sep = sep || ',';
+  this.forEach(node => str = (str ? str + sep : str) + node.value);
+  return '[' + str + ']';
 };
 // Time complexity:
 
 LinkedList.prototype.insertAfter = function(node, value) {
-  // implement me...
+  let newNode = new Node(value);
+  newNode.next = node.next;
+  node.next = newNode;
+  console.log(`insertAfter: ${this.print()}`);
+  return newNode;
 };
 // Time complexity:
 
 LinkedList.prototype.removeAfter = function(node) {
-  // implement me...
+  let removedNode = node.next;
+  if (!removedNode) {
+    console.log(`Nothing to removeAfter: ${this.print()}`);
+    return null; // there is nothing after
+  }
+  node.next = removedNode.next;
+  removedNode.next = null;
+  console.log(`removeAfter: ${this.print()}`);
+  return removedNode;
 };
 // Time complexity:
 
 LinkedList.prototype.insertHead = function(value) {
-  // implement me...
+  let newNode = new Node(value);
+  newNode.next = this.head;
+  this.head = newNode;
+  console.log(`insertHead: ${this.print()}`);
+  return newNode;
 };
 // Time complexity:
 
 LinkedList.prototype.removeHead = function() {
-  // implement me...
+  let removedNode = this.head;
+  this.head = removedNode.next;
+  console.log(`removeHead: ${this.print()}`);
+  return removedNode;
 }
 
 LinkedList.prototype.findNode = function(value) {
-  // implement me...
+  let node = this.head;
+  while (node) {
+    if (node.value === value) {
+      console.log(`findNode: ${node.value}`);
+      return node;
+    }
+    node = node.next;
+  }
+  console.log(`Didn't findNode: ${value}`);
+  return null;
 };
 // Time complexity:
 
 LinkedList.prototype.appendToTail = function(value) {
-  // implement me...
+  let newNode = new Node(value);
+  let node = this.head;
+  while (node.next) {
+    node = node.next;
+  }
+  node.next = newNode;
+  console.log(`appendToTail: ${this.print()}`);
+  return newNode;
 };
 // Time complexity:
 
@@ -133,16 +177,63 @@ LinkedList.prototype.appendToTail = function(value) {
 // PART 2:
 
 LinkedList.prototype.insertBefore = function(node, value) {
-  // implement me...
+  if (node === this.head) {
+    return this.insertHead(value)
+  }
+  let prevNode = this.head;
+  while (prevNode) {
+    if (prevNode.next === node) {
+      let newNode = new Node(value);
+      prevNode.next = newNode;
+      newNode.next = node;
+      console.log(`insertBefore: ${this.print()}`);
+      return newNode;
+    }
+    prevNode = prevNode.next;
+  }
+  return null;
 };
 // Time complexity:
 
 LinkedList.prototype.removeBefore = function(node) {
-  // implement me...
+  if (node === this.head) {
+    console.log(`Nothing to removeBefore: ${this.print()}`);
+    return null; // there is nothing before
+  }
+  if (node === this.head.next) {
+    return this.removeHead()
+  }
+  let prevNode = this.head;
+  while (prevNode && prevNode.next) {
+    if (prevNode.next.next === node) {
+      let removedNode = prevNode.next;
+      removedNode.next = null;
+      prevNode.next = node;
+      console.log(`removeBefore: ${this.print()}`);
+      return removedNode;
+    }
+    prevNode = prevNode.next;
+  }
+  console.log(`Nothing to removeBefore: ${this.print()}`);
+  return null;
 };
 // Time complexity:
 
+let ll = new LinkedList(1)
+let n = ll.appendToTail(2);
+let r = ll.removeAfter(n);
+n = ll.insertAfter(n,3);
+r = ll.removeBefore(n);
+n = ll.removeBefore(n);
+n = ll.removeBefore(n);
 
+n = ll.insertHead(1);
+n = ll.insertAfter(n,2);
+n = ll.insertBefore(n,'c');
+n = ll.insertBefore(n,'b');
+n = ll.findNode(1);
+n = ll.insertBefore(n,'a');
+r = ll.removeAfter(n);
 
 /*
 *** Exercises:
