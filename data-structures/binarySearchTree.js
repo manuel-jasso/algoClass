@@ -58,37 +58,89 @@ function BinarySearchTree (value) {
 }
 
 BinarySearchTree.prototype.insert = function(value) {
-  // implement me...
+  if (value < this.value) {
+    if (this.left) {
+      this.left.insert(value);
+    } else {
+      this.left = new BinarySearchTree(value);
+    }
+  } else {
+    if (this.right) {
+      this.right.insert(value);
+    } else {
+      this.right = new BinarySearchTree(value);
+    }
+  }
+  return this; // root
 };
-// Time complexity:
 
 BinarySearchTree.prototype.contains = function(value) {
   // implement me...
 };
-// Time complexity:
 
 BinarySearchTree.prototype.traverseDepthFirst_inOrder = function(fn) {
-  // implement me...
+  if (this.left) {
+    this.left.traverseDepthFirst_inOrder(fn);
+  }
+  fn(this.value);
+  if (this.right) {
+    this.right.traverseDepthFirst_inOrder(fn);
+  }
 };
-// Time complexity:
 
 BinarySearchTree.prototype.traverseDepthFirst_preOrder = function(fn) {
-  // implement me...
+  fn(this.value);
+  if (this.left) {
+    this.left.traverseDepthFirst_preOrder(fn);
+  }
+  if (this.right) {
+    this.right.traverseDepthFirst_preOrder(fn);
+  }
 };
-// Time complexity:
 
 BinarySearchTree.prototype.traverseDepthFirst_postOrder = function(fn) {
-  // implement me...
+  if (this.left) {
+    this.left.traverseDepthFirst_postOrder(fn);
+  }
+  if (this.right) {
+    this.right.traverseDepthFirst_postOrder(fn);
+  }
+  fn(this.value);
 };
-// Time complexity:
-
 
 BinarySearchTree.prototype.checkIfFull = function() {
   // implement me...
 };
-// Time complexity:
 
 BinarySearchTree.prototype.checkIfBalanced = function() {
   // implement me...
 };
-// Time complexity:
+
+let tree = new BinarySearchTree(11);
+tree.insert(7);
+tree.insert(5);
+tree.insert(9);
+tree.insert(3);
+tree.insert(6);
+tree.insert(8);
+tree.insert(10);
+tree.insert(15);
+tree.insert(13);
+tree.insert(20);
+tree.insert(12);
+tree.insert(14);
+tree.insert(18);
+tree.insert(25);
+
+let inOrder = [];
+tree.traverseDepthFirst_inOrder((value) => inOrder.push(value));
+console.log(inOrder);
+
+let preOrder = [];
+tree.traverseDepthFirst_preOrder((value) => preOrder.push(value));
+console.log(preOrder);
+
+let postOrder = [];
+tree.traverseDepthFirst_postOrder((value) => postOrder.push(value));
+console.log(postOrder);
+
