@@ -156,9 +156,7 @@ Graph.prototype.forEach = function(fn) {
 // Time complexity: O(N)
 
 Graph.prototype.traverseDepthFirst = function(value, fn, visited = {}, distance = 0) {
-  if (!this._nodes[value]) {
-    return;
-  }
+  if (!this._nodes[value]) return;
   fn(value, distance);
   visited[value] = true;
   this._nodes[value].forEach((neighbor) => {
@@ -170,7 +168,18 @@ Graph.prototype.traverseDepthFirst = function(value, fn, visited = {}, distance 
 // Time complexity: O(N)
 
 Graph.prototype.traverseBreadthFirst = function(value, fn) {
-  // implement me...
+  if (!this._nodes[value]) return;
+  let queue = [value];
+  let visited = {};
+  while (queue.length) {
+    let node = queue.shift();
+    if (visited[node] === undefined) {
+      fn(node);
+      visited[node] = true;
+      let neighbors = this._nodes[node].filter(val => visited[val] !== true);
+      queue = queue.concat(neighbors);
+    }
+  }
 };
 // Time complexity:
 
@@ -195,5 +204,9 @@ g.addEdge(5,6);
 g.print();
 
 df = [];
-g.traverseDepthFirst(1,(val,dis) => {df.push([val,dis])});
+g.traverseDepthFirst(1,(val,dis) => {df.push(val)});
 console.log(df);
+
+bf = [];
+g.traverseBreadthFirst(1,(val) => {bf.push(val)});
+console.log(bf);
