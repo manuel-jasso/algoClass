@@ -92,39 +92,66 @@ function Graph () {
 }
 
 Graph.prototype.addNode = function(value) {
-  // implement me...
+  if (value !== undefined && this._nodes[value] === undefined) {
+    this._nodes[value] = [];
+  }
 };
-// Time complexity:
+// Time complexity: O(1)
 
 Graph.prototype.removeNode = function(value) {
-  // implement me...
+  delete this._nodes[value];
 };
-// Time complexity:
+// Time complexity: O(1)
 
 Graph.prototype.contains = function(value) {
-  // implement me...
+  return (this._nodes[value]) ? true : false;
 };
-// Time complexity:
+// Time complexity: O(1)
 
 Graph.prototype.addEdge = function(value1, value2) {
-  // implement me...
+  let node1 = this._nodes[value1];
+  let node2 = this._nodes[value2];
+  if (node1 && node2) {
+    node1.push(value2);
+    node2.push(value1);
+  }
 };
-// Time complexity:
+// Time complexity: O(1)
 
 Graph.prototype.removeEdge = function(value1, value2) {
-  // implement me...
+  let node1 = this._nodes[value1];
+  let node2 = this._nodes[value2];
+  if (node1 && node2) {
+    let idx1 = node1.findIndex(n => n === value2);
+    let idx2 = node2.findIndex(n => n === value1);
+    if (idx1 >=0 && idx2 >= 0) {
+      node1.splice(idx1,1);
+      node2.splice(idx2,1);
+    }
+  }
 };
-// Time complexity:
+// Time complexity: O(N)
 
 Graph.prototype.hasEdge = function(value1, value2) {
-  // implement me...
+  let node1 = this._nodes[value1];
+  let node2 = this._nodes[value2];
+  if (node1 && node2) {
+    let idx1 = node1.findIndex(n => n === value2);
+    let idx2 = node2.findIndex(n => n === value1);
+    if (idx1 && idx2) {
+      return true;
+    }
+  }
+  return false;
 };
-// Time complexity:
+// Time complexity: O(N)
 
 Graph.prototype.forEach = function(fn) {
-  // implement me...
+  for (let val in this._nodes) {
+    fn(val,this._nodes[val], this._nodes);
+  }
 };
-// Time complexity:
+// Time complexity: O(N)
 
 Graph.prototype.traverseDepthFirst = function(value, fn, visited, distance) {
   // implement me...
@@ -135,3 +162,15 @@ Graph.prototype.traverseBreadthFirst = function(value, fn) {
   // implement me...
 };
 // Time complexity:
+
+
+let g = new Graph();
+g.addNode('A');
+g.addNode('B');
+console.log(JSON.stringify(g._nodes,null,2));
+
+g.addEdge('A','B');
+console.log(JSON.stringify(g._nodes,null,2));
+
+g.removeEdge('A','B');
+console.log(JSON.stringify(g._nodes,null,2));
