@@ -68,7 +68,16 @@ function simpleHash(str, tableSize) {
 // source: http://pmav.eu/stuff/javascript-hashing-functions/source.html
 
 function HashTable(/* ??? */) {
-  // implement me...
+  this._storage = new Array(500).fill(null);
+  this._count = 0;
+}
+
+HashTable.prototype.simpleHash = function (str) {
+  var hash = 0;
+  for (var i=0; i<str.length; i++) {
+    hash += str.charCodeAt(i) * (i+1);
+  }
+  return hash % this._storage.length;
 }
 
 // This is a helper method that you may want to implement to help keep your code DRY
@@ -84,36 +93,50 @@ HashTable.prototype.find = function(key) {
 };
 
 HashTable.prototype.set = function(key, value) {
-  // implement me...
+  let idx = this.simpleHash(key);
+  if (this._storage[idx] === null) {
+    this._storage[idx] = value;
+    this._count += 1;
+  }
 };
 // Time complexity:
 
 HashTable.prototype.get = function(key) {
-  // implement me...
+  let idx = this.simpleHash(key);
+  return this._storage[idx];
 };
 // Time complexity:
 
 HashTable.prototype.has = function(key) {
-  // implement me...
+  let idx = this.simpleHash(key);
+  return this._storage[idx] ? true : false;
 };
 // Time complexity:
 
 HashTable.prototype.delete = function(key) {
-  // implement me...
+  let idx = this.simpleHash(key);
+  if (this._storage[idx] !== null) {
+    this._storage[idx] = null;
+    this._count -= 1;
+  }
 };
 // Time complexity:
 
 HashTable.prototype.count = function() {
-  // implement me...
+  return this._count;
 };
 // Time complexity:
 
 HashTable.prototype.forEach = function(callback) {
-  // implement me...
+  this._storage.forEach((value) => {
+    if (value !== null) callback(value);
+  });
 };
 // Time complexity:
 
-
+HashTable.prototype.print = function () {
+  this.forEach(value => console.log(value));
+};
 
 /*
 *** Exercises:
@@ -125,3 +148,10 @@ HashTable.prototype.forEach = function(callback) {
 3. Implement a hash table using linked lists for collision-handling. Why might this be preferable to using arrays.
 
 */
+
+ht = new HashTable();
+ht.set('lola','falana');
+ht.set('memo','tivas');
+ht.set('pepe','pez');
+ht.set('foo','bar');
+ht.print();
