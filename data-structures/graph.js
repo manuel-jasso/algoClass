@@ -113,7 +113,7 @@ Graph.prototype.addEdge = function(value1, value2) {
   let node2 = this._nodes[value2];
   if (node1 && node2) {
     node1.push(value2);
-    node2.push(value1);
+    // node2.push(value1);
   }
 };
 // Time complexity: O(1)
@@ -124,8 +124,10 @@ Graph.prototype.removeEdge = function(value1, value2) {
   if (node1 && node2) {
     let idx1 = node1.findIndex(n => n === value2);
     let idx2 = node2.findIndex(n => n === value1);
-    if (idx1 >=0 && idx2 >= 0) {
+    if (idx1 >=0) {
       node1.splice(idx1,1);
+    }
+    if (idx2 >= 0) {
       node2.splice(idx2,1);
     }
   }
@@ -153,24 +155,45 @@ Graph.prototype.forEach = function(fn) {
 };
 // Time complexity: O(N)
 
-Graph.prototype.traverseDepthFirst = function(value, fn, visited, distance) {
-  // implement me...
+Graph.prototype.traverseDepthFirst = function(value, fn, visited = {}, distance = 0) {
+  if (!this._nodes[value]) {
+    return;
+  }
+  fn(value, distance);
+  visited[value] = true;
+  this._nodes[value].forEach((neighbor) => {
+    if (!visited[neighbor]) {
+      this.traverseDepthFirst(neighbor,fn,visited,distance+1);
+    }
+  });
 };
-// Time complexity:
+// Time complexity: O(N)
 
 Graph.prototype.traverseBreadthFirst = function(value, fn) {
   // implement me...
 };
 // Time complexity:
 
+Graph.prototype.print = function () {
+  console.log(JSON.stringify(g._nodes,null,2));
+}
+
 
 let g = new Graph();
-g.addNode('A');
-g.addNode('B');
-console.log(JSON.stringify(g._nodes,null,2));
+g.addNode(1);
+g.addNode(2);
+g.addEdge(1,2);
+g.addNode(3);
+g.addEdge(1,3);
+g.addNode(4);
+g.addEdge(2,4);
+g.addEdge(3,4);
+g.addNode(5);
+g.addEdge(4,5);
+g.addNode(6);
+g.addEdge(5,6);
+g.print();
 
-g.addEdge('A','B');
-console.log(JSON.stringify(g._nodes,null,2));
-
-g.removeEdge('A','B');
-console.log(JSON.stringify(g._nodes,null,2));
+df = [];
+g.traverseDepthFirst(1,(val,dis) => {df.push([val,dis])});
+console.log(df);
